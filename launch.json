@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Node",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/collect.js",
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "process connect",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
+        },
+        {
+            "name": "Launch Program",
+            "type": "php",
+            "request": "launch",
+            "port": 9000,
+            "pathMappings": {
+                "/var/www/html": "${workspaceRoot}/www",
+                "/app": "${workspaceRoot}/app"
+            }
+        }
+    ]
+}
