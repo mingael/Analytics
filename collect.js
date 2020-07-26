@@ -108,30 +108,29 @@ console.log(win);
 console.log(nav);
 console.log(doc);
 
+
+function postSend(url, data) {
+  return fetch(url, {
+    method: "POST",
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    hreaders: new Headers({
+      'Content-Type': 'application/json; charset=utf-8'
+    }),
+    body: JSON.stringify(data)
+  }).then(response => response.json());
+}
+
 function collect(url) {
-  let data = {
+  let msg = {
     appInfo: getAppInfo(),
     language: getLanguage(),
     location: getLocation(),
     browser: getBrowser(),
   };
-  console.log(data);
-  send(url, data);
-}
-
-function send(url, msg) {
-  let data = new FormData();
-  data.append("msg", msg);
-
-  fetch(url, {
-    method: "POST",
-    hreaders: {},
-    body: data,
-  }).then(function (response) {
-    if (response.ok) {
-      console.log(response.json());
-    }
-  }).catch(function (error) {
-    console.log(error);
-  });
+  console.log(msg);
+  
+  postSend(url, msg)
+    .then(res => console.log(res)) // Result from the `response.json()` call
+    .catch(error => console.log());
 }
