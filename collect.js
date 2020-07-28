@@ -73,14 +73,7 @@ function getLocation() {
   }
 
   let search = loc.search;
-  search = search.substr(search.indexOf("?") + 1);
-  let params = search.split("&");
-
-  let param = {};
-  for (var i = 0; i < params.length; i++) {
-    var tmp = params[i].split("=");
-    param[tmp[0]] = tmp[1];
-  }
+  let param = search.substr(search.indexOf("?") + 1);
 
   return {
     url: loc.href,
@@ -92,11 +85,37 @@ function getLocation() {
 }
 
 /**
+ * 파라미터 정보 가져오기
+ */
+function getParameter() {
+  let loc = win.location;
+  let search = loc.search;
+  search = search.substr(search.indexOf("?") + 1);
+  let params = search.split("&");
+
+  let param = {};
+  for (var i = 0; i < params.length; i++) {
+    var tmp = params[i].split("=");
+    param[tmp[0]] = tmp[1];
+  }
+
+  let arr = new Array();
+  arr['str'] = search;
+  arr['obj'] = param;
+
+  return arr;
+}
+
+/**
  * Browser
  */
 function getBrowser() {
   return {
+    codeName: nav.appCodeName,
+    name: nav.appName,
+    version: nav.appVersion,
     platform: nav.platform,
+    product: nav.product,
     userAgeent: nav.userAgent,
   };
 }

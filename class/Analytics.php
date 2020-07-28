@@ -4,8 +4,11 @@ class Analytics {
 
     public function __construct() {
         $contents = file_get_contents('php://input');
+        $this->log($contents);
         if(!empty($contents)) {
             $this->data = json_decode($contents);
+        } else {
+            $this->data = '';
         }
     }
 
