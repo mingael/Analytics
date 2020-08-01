@@ -5,25 +5,38 @@ include 'db.php';
 $ant = new Analytics();
 $data = $ant->getData();
 
-$ant->log(print_r($_SERVER, true));
+debug('START');
 
 // Database
-$conn = mysql_connect($dbHost, $dbName, $dbPw);
+$conn = @mysqli_connect($dbHost, $dbUser, $dbPassword, $dbBase);
 
-// INSERT
-$sql = 'insert into collect (save_date, ip) values (\''.date('Y-m-d').'\', \''.$data['ip'].'\')';
-mysql_query($conn, $sql);
+if($conn) {
+    // INSERT
+    $sql = "insert into collect (save_date, ip) values ('".date('Y-m-d')."', '".$data['ip']."')";
+    debug($sql);
+    $result = @mysqli_query($conn, $sql);
+} else {
+    debug(mysqli_connect_errno());
+    debug(mysqli_connect_error());
+}
 
 
-if(is_array($data)) {
+if(isset($result)) {
     $res['res'] = 'OK';
 
-    $ant->log(print_r($data, true));
+    //debug(print_r($data, true));
 } else {
     $res['res'] = 'NO';
 }
 
-$ant->log('?');
+mysqli_close($conn);
+debug('END');
 
 echo json_encode($res);
+
+function debug($str) {
+    $fp = fopen('log/'.date('Ymd').'.log', 'a');
+    fwrite($fp, '['.date('H:i:s').']'.$str."\n");
+    fclose($fp);
+}
 ?>

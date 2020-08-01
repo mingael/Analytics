@@ -4,7 +4,6 @@ class Analytics {
 
     public function __construct() {
         $contents = file_get_contents('php://input');
-        $this->log($contents);
         if(!empty($contents)) {
             $this->data = json_decode($contents);
         } else {
@@ -14,12 +13,6 @@ class Analytics {
 
     public function getData() {
         return $this->data;
-    }
-
-    public function log($str) {
-        $fp = fopen('log/'.date('Ymd').'.log', 'a');
-        fwrite($fp, '['.date('H:i:s').']'.$str."\n");
-        fclose($fp);
     }
 }
 ?>
