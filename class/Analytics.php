@@ -5,7 +5,13 @@ class Analytics {
     public function __construct() {
         $contents = file_get_contents('php://input');
         if(!empty($contents)) {
-            $this->data = json_decode($contents);
+            $data = (Array) json_decode($contents);
+            foreach($data as $key => $val) {
+                $data[$key] = (Array) $val;
+            }
+            $data['ip'] = $_SERVER['REMOTE_ADDR'];
+
+            $this->data = $data;
         } else {
             $this->data = '';
         }

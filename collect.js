@@ -116,7 +116,7 @@ function getBrowser() {
     version: nav.appVersion,
     platform: nav.platform,
     product: nav.product,
-    userAgeent: nav.userAgent,
+    userAgent: nav.userAgent,
   };
 }
 
@@ -148,7 +148,7 @@ function collect(url) {
     browser: getBrowser(),
   };
   console.log(msg);
-  
+
   postSend(url, msg)
     .then(res => console.log(res)) // Result from the `response.json()` call
     .catch(error => console.log());
