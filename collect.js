@@ -19,7 +19,7 @@
 //   url: "http://localhost/Analytics/"
 //
 //
-
+let url = '';
 let win = window;
 let nav = navigator;
 let doc = document;
@@ -110,6 +110,8 @@ function getParameter() {
  * Browser
  */
 function getBrowser() {
+  let agent = nav.userAgent.toLowerCase();
+
   return {
     codeName: nav.appCodeName,
     name: nav.appName,
@@ -117,7 +119,52 @@ function getBrowser() {
     platform: nav.platform,
     product: nav.product,
     userAgent: nav.userAgent,
+    type: isMobile(agent) ? 'M' : 'W',
+    device: getDevice(agent),
   };
+}
+
+/**
+ * 모바일 여부
+ */
+function isMobile(agent) {
+  let filter = /iphone|ipad|ipod|android/i;
+  if(filter.test(agent)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * 기기
+ */
+function getDevice(agent) {
+  //let devices = ['Firefox', 'Seamonkey', 'Chrome', 'Chromium', 'Safari', 'Opera'];
+  if(/trident|msie/.test(agent)) {
+    return 'Internet Explorer';
+  } else if(/chrome/.test(agent)) {
+    return 'Chrome';
+  } else if(/edge/.test(agent)) {
+    return 'Edge';
+  } else if(/firefox/.test(agent)) {
+    return 'Firefox';
+  } else if(/opera/.test(agent)) {
+    return 'Opera';
+  } else if(/whale/.test(agent)) {
+    return 'Naver Whale';
+  } else if(/samsungbrowser/.test(agent)) {
+    return 'Samsung Browser';
+  } else if(/crios/.test(agent)) {
+    return 'Chrome Mobile';
+  } else if(/chromium/.test(agent)) {
+    return 'Chromium';
+  } else if(/seamonkey/.test(agent)) {
+    return 'Seamonkey';
+  } else if(/safari/.test(agent)) {
+    return 'Safari';
+  }
+  return '';
 }
 
 // cookie
@@ -127,7 +174,9 @@ console.log(win);
 console.log(nav);
 console.log(doc);
 
-
+/**
+ * fetch
+ */
 function postSend(url, data) {
   return fetch(url, {
     method: "POST",
@@ -140,7 +189,12 @@ function postSend(url, data) {
   }).then(response => response.json());
 }
 
+/**
+ * load 실행
+ */
 function collect(url) {
+  url = url;
+
   let msg = {
     appInfo: getAppInfo(),
     language: getLanguage(),
@@ -153,3 +207,12 @@ function collect(url) {
     .then(res => console.log(res)) // Result from the `response.json()` call
     .catch(error => console.log());
 }
+
+
+/**
+ * close / unload
+ */
+window.addEventListener('unload', function() {
+  alert('?');
+  // postSend(url, msg);
+});
